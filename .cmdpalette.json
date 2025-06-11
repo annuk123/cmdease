@@ -1,0 +1,102 @@
+{
+  "Development": {
+    "Start Server (npm)": "npm run dev",
+    "Start Server (pnpm)": "pnpm dev",
+    "Start Server (yarn)": "yarn dev",
+    "Start Server (bun)": "bun run dev",
+    "Build Project (npm)": "npm run build",
+    "Build Project (pnpm)": "pnpm build",
+    "Build Project (yarn)": "yarn build",
+    "Build Project (bun)": "bun run build"
+  },
+
+  "UI Libraries": {
+    "Install shadcn (npm)": "npm install shadcn/ui",
+    "Install Tailwind CSS (npm)": "npm install -D tailwindcss postcss autoprefixer",
+    "Install Material UI (npm)": "npm install @mui/material @emotion/react @emotion/styled",
+    "Install Bootstrap (npm)": "npm install bootstrap"
+  },
+
+  "Databases": {
+    "Install Convex (npm)": "npm install convex",
+    "Install NeonDB Client (npm)": "npm install neon",
+    "Install MongoDB Client (npm)": "npm install mongodb",
+    "Install PostgreSQL Client (npm)": "npm install pg",
+    "Install MySQL Client (npm)": "npm install mysql2",
+    "Install Redis Client (npm)": "npm install ioredis",
+    "Install Supabase Client (npm)": "npm install @supabase/supabase-js",
+    "Install Firebase Client (npm)": "npm install firebase"
+  },
+
+  "Prisma": {
+    "Install Prisma (npm)": "npm install prisma --save-dev",
+    "Install Prisma Client (npm)": "npm install @prisma/client",
+    "Initialize Prisma": "npx prisma init",
+    "Prisma Migrate Dev": "npx prisma migrate dev",
+    "Prisma Generate": "npx prisma generate",
+    "Prisma Studio": "npx prisma studio"
+  },
+
+  "Docker": {
+    "Docker Build": "docker build -t your-image-name .",
+    "Docker Run": "docker run -p 3000:3000 your-image-name",
+    "Docker Compose Up": "docker-compose up",
+    "Docker Compose Down": "docker-compose down",
+    "Docker List Containers": "docker ps -a",
+    "Docker Stop All": "docker stop $(docker ps -aq)",
+    "Docker Remove All Containers": "docker rm $(docker ps -aq)"
+  },
+
+  "Git": {
+    "Git Init": "git init",
+    "Git Clone": "git clone <repository-url>",
+    "Git Add All": "git add .",
+    "Git Commit": "git commit -m 'your message'",
+    "Git Push": "git push origin main",
+    "Git Pull": "git pull origin main",
+    "Git Checkout": "git checkout -b new-branch",
+    "Git Status": "git status",
+    "Git Log": "git log --oneline"
+  },
+
+  "Supabase": {
+    "Supabase Login": "npx supabase login",
+    "Supabase Init": "npx supabase init",
+    "Supabase Start": "npx supabase start",
+    "Supabase DB Push": "npx supabase db push"
+  },
+
+  "Firebase": {
+    "Firebase Login": "firebase login",
+    "Firebase Init": "firebase init",
+    "Firebase Deploy": "firebase deploy",
+    "Firebase Emulator Start": "firebase emulators:start"
+  },
+
+  "CLI Tools": {
+    "Vite Create": "npm create vite@latest",
+    "Next.js Create": "npx create-next-app@latest",
+    "Astro Create": "npm create astro@latest",
+    "SvelteKit Create": "npm create svelte@latest",
+    "Remix Create": "npx create-remix@latest"
+  },
+
+  "Convex DB": {
+    "Convex Dev Server": "npx convex dev",
+    "Convex Codegen": "npx convex codegen",
+    "Convex Deploy": "npx convex deploy",
+    "Convex Import": "npx convex import",
+    "Convex Export": "npx convex export"
+  },
+
+  "Testing & Linting": {
+    "Run Tests (npm)": "npm test",
+    "Lint Code (npm)": "npm run lint"
+  },
+
+  "Deployment": {
+    "Deploy to Vercel": "vercel --prod",
+    "Deploy to Netlify": "netlify deploy --prod",
+    "Deploy to Railway": "railway up"
+  }
+}
