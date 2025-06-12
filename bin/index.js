@@ -4,14 +4,21 @@ import inquirer from 'inquirer';
 import autocompletePrompt from 'inquirer-autocomplete-prompt';
 inquirer.registerPrompt('autocomplete', autocompletePrompt);
 
-import { startConnectionMonitor } from '../lib/connectionMonitor.js';
-import { fetchRemoteCommands, getCommands, autoPullOnVersionChange } from '../lib/commandLoader.js';
+import { program } from 'commander';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import fs from 'fs';
 import fuzzy from 'fuzzy';
 import ora from 'ora';
 
+import { 
+  fetchRemoteCommands, 
+  getCommands, 
+  ensureCommands, 
+  autoPullOnVersionChange 
+} from '../lib/commandLoader.js';
+
+import { startConnectionMonitor } from '../lib/connectionMonitor.js';
 import { addToHistory, getHistory, syncLocalHistory } from '../lib/historyService.js';
 import { toggleFavorite, getFavorites, syncLocalFavorites } from '../lib/favoritesService.js';
 import { isOnline } from '../lib/connection.js';
@@ -19,23 +26,49 @@ import { loadLocalHistory, loadLocalFavorites } from '../lib/localCache.js';
 
 const remoteUrl = 'https://raw.githubusercontent.com/annuk123/cmdease/main/.cmdpalette.json';
 
-let online = false;
-let list = [];
-let categories = [];
+program
+  .name('cmdease')
+  .description('Command Palette CLI')
+  .version('1.0.0');
 
-const configPath = './.cmdpalette.json';
-if (!fs.existsSync(configPath)) {
-  console.log(chalk.red('❌ No .cmdpalette.json found'));
+program
+  .command('init')
+  .description('Initialize cmdease in this project')
+  .action(async () => {
+    const { initializeCmdease } = await import('../lib/init.js');
+    await initializeCmdease();
+  });
+
+program
+  .command('pull')
+  .description('Manually fetch and update commands')
+  .action(async () => {
+    const { manualPull } = await import('../lib/commandLoader.js');
+    await manualPull();
+  });
+
+program
+  .action(() => {
+    main(); // Call the main function
+  });
+
+program.parse(process.argv);
+
+// ✅ Check for cmdpalette.json
+if (!fs.existsSync('./.cmdpalette.json')) {
+  console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
   process.exit(1);
 }
 
-// ✅ Handle --help flag
+// ✅ Show custom help
 if (process.argv.includes('--help')) {
   console.log(`
 ${chalk.cyan('cmdease - Developer Command Palette CLI')}
 
 ${chalk.yellow('Usage:')}
   cmdease                Start the interactive CLI
+  cmdease init           Initialize cmdease in this project
+  cmdease pull           Manually sync commands
   cmdease --help         Show this help message
   cmdease --version      Show CLI version
 
@@ -57,19 +90,16 @@ Happy Coding! 🚀
   process.exit(0);
 }
 
-// ✅ Handle --version flag
-if (process.argv.includes('--version')) {
-  const packageJson = await import('../package.json', { assert: { type: 'json' } });
-  console.log(`cmdease CLI version: ${packageJson.default.version}`);
-  process.exit(0);
-}
+let list = [];
+let categories = [];
+let online = false;
 
 function buildCommandList() {
   const commands = getCommands() || {};
   list = [];
 
   for (const category in commands) {
-    if (category === 'version') continue; // ✅ Skip version key
+    if (category === 'version') continue;
 
     for (const cmdName in commands[category]) {
       list.push({
@@ -84,19 +114,80 @@ function buildCommandList() {
   categories = [...new Set(list.map(item => item.category))];
 }
 
-function getCategories() {
-  const commands = getCommands() || {};
-  return Object.keys(commands).filter(key => key !== 'version'); // ✅ Skip version key
-}
+async function main() {
+  try {
+    await ensureCommands(remoteUrl);
+    await autoPullOnVersionChange(remoteUrl);
+    buildCommandList();
+    startConnectionMonitor();
+    await autoRefreshCommands(remoteUrl);
 
-buildCommandList();
-startConnectionMonitor();
+    online = await isOnline();
+
+    if (online) {
+      console.log(chalk.green('✅ You are Online (Convex Live)'));
+      await syncLocalHistory();
+      await syncLocalFavorites();
+    } else {
+      console.log(chalk.red('❌ You are Offline (Local Cache Active)'));
+    }
+
+    syncWhenOnline();
+
+    const spinner = ora('Fetching categories...').start();
+    categories = getCategories();
+
+    if (categories.length === 0) {
+      spinner.fail('⚠️ No categories available. Try to sync now.');
+      process.exit(0);
+    } else {
+      spinner.succeed('Categories fetched successfully!');
+    }
+
+    const { selectedCategory } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'selectedCategory',
+        message: 'Select a category:',
+        choices: categories.map(cat => ({ name: cat, value: cat })),
+      }
+    ]);
+
+    console.log(`👉 You selected: ${selectedCategory}`);
+
+    const { cmd } = await inquirer.prompt([
+      {
+        type: 'autocomplete',
+        name: 'cmd',
+        message: `${online ? chalk.green('Online') : chalk.red('Offline')}  Start typing to search a command:`,
+        source: (answersSoFar, input) => searchCommands(selectedCategory, input)
+      }
+    ]);
+
+    const selected = list.find(item => item.value === cmd);
+
+    console.log(chalk.blue(`\n🚀 Running: ${cmd}\n`));
+    shell.exec(cmd);
+
+    await addToHistory(selected);
+
+    const { favorite } = await inquirer.prompt([
+      { type: 'confirm', name: 'favorite', message: '⭐ Add/Remove this command from favorites?', default: false }
+    ]);
+
+    if (favorite) {
+      await toggleFavorite(selected);
+    }
+  } catch (err) {
+    console.error(chalk.red('❌ Unexpected error:'), err);
+  }
+}
 
 async function autoRefreshCommands(remoteUrl) {
   try {
-    await autoPullOnVersionChange(remoteUrl); // ✅ Auto pull on version change
+    await fetchRemoteCommands(remoteUrl);
     buildCommandList();
-    console.log(chalk.yellow('🔄 Commands updated from remote.'));
+    console.log(chalk.yellow('🔄 Commands auto-refreshed from remote.'));
   } catch (err) {
     console.log(chalk.yellow('⚠️ Failed to fetch remote commands. Using local cache.'));
   }
@@ -111,101 +202,6 @@ async function autoRefreshCommands(remoteUrl) {
     }
   }, 30000);
 }
-
-(async () => {
-  await autoRefreshCommands(remoteUrl);
-
-  online = await isOnline();
-
-  if (online) {
-    console.log(chalk.green('✅ You are Online (Convex Live)'));
-    await syncLocalHistory();
-    await syncLocalFavorites();
-  } else {
-    console.log(chalk.red('❌ You are Offline (Local Cache Active)'));
-  }
-
-  syncWhenOnline();
-
-  const statusBadge = online ? chalk.green('Online') : chalk.red('Offline');
-
-  const spinner = ora('Fetching categories...').start();
-
-  try {
-    categories = getCategories();
-
-    if (categories.length === 0) throw new Error('No categories available');
-
-    spinner.succeed('Categories fetched successfully!');
-  } catch (err) {
-    spinner.fail('Failed to fetch categories.');
-    console.log(chalk.yellow('⚠️ No categories available. You can try to sync now.'));
-    const { syncNow } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'syncNow',
-        message: 'Do you want to sync now?',
-        default: true
-      }
-    ]);
-
-    if (syncNow) {
-      try {
-        await fetchRemoteCommands(remoteUrl);
-        buildCommandList();
-        categories = getCategories();
-
-        if (categories.length === 0) {
-          console.log(chalk.red('❌ Still no categories available after sync. Exiting.'));
-          process.exit(0);
-        } else {
-          console.log(chalk.green('✅ Categories fetched successfully after sync!'));
-        }
-      } catch (syncErr) {
-        console.log(chalk.red('❌ Sync failed. Exiting.'));
-        process.exit(0);
-      }
-    } else {
-      console.log(chalk.blue('👋 Exiting cmdease CLI. Bye!'));
-      process.exit(0);
-    }
-  }
-
-  const { selectedCategory } = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'selectedCategory',
-      message: 'Select a category:',
-      choices: categories.map((cat) => ({ name: cat, value: cat })),
-    },
-  ]);
-
-  console.log(`👉 You selected: ${selectedCategory}`);
-
-  const { cmd } = await inquirer.prompt([
-    {
-      type: 'autocomplete',
-      name: 'cmd',
-      message: `${statusBadge}  Start typing to search a command:`,
-      source: (answersSoFar, input) => searchCommands(selectedCategory, input)
-    }
-  ]);
-
-  const selected = list.find(item => item.value === cmd);
-
-  console.log(chalk.blue(`\n🚀 Running: ${cmd}\n`));
-  shell.exec(cmd);
-
-  await addToHistory(selected);
-
-  const { favorite } = await inquirer.prompt([
-    { type: 'confirm', name: 'favorite', message: '⭐ Add/Remove this command from favorites?', default: false }
-  ]);
-
-  if (favorite) {
-    await toggleFavorite(selected);
-  }
-})();
 
 async function buildList() {
   const history = online ? await getHistory() : loadLocalHistory();
@@ -249,3 +245,8 @@ process.on('SIGINT', () => {
   console.log(chalk.blue('\n👋 Exiting cmdease CLI. Bye!'));
   process.exit(0);
 });
+
+function getCategories() {
+  const commands = getCommands() || {};
+  return Object.keys(commands).filter(key => key !== 'version');
+}
