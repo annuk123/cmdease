@@ -3,8 +3,9 @@
 import inquirer from 'inquirer';
 import autocompletePrompt from 'inquirer-autocomplete-prompt';
 inquirer.registerPrompt('autocomplete', autocompletePrompt);
+
 import { startConnectionMonitor } from '../lib/connectionMonitor.js';
-import { fetchRemoteCommands, getCommands } from '../lib/commandLoader.js';
+import { fetchRemoteCommands, getCommands, autoPullOnVersionChange } from '../lib/commandLoader.js';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import fs from 'fs';
@@ -16,7 +17,11 @@ import { toggleFavorite, getFavorites, syncLocalFavorites } from '../lib/favorit
 import { isOnline } from '../lib/connection.js';
 import { loadLocalHistory, loadLocalFavorites } from '../lib/localCache.js';
 
+const remoteUrl = 'https://raw.githubusercontent.com/annuk123/cmdease/main/.cmdpalette.json';
+
 let online = false;
+let list = [];
+let categories = [];
 
 const configPath = './.cmdpalette.json';
 if (!fs.existsSync(configPath)) {
@@ -24,14 +29,48 @@ if (!fs.existsSync(configPath)) {
   process.exit(1);
 }
 
-let list = [];
-let categories = [];
+// ✅ Handle --help flag
+if (process.argv.includes('--help')) {
+  console.log(`
+${chalk.cyan('cmdease - Developer Command Palette CLI')}
+
+${chalk.yellow('Usage:')}
+  cmdease                Start the interactive CLI
+  cmdease --help         Show this help message
+  cmdease --version      Show CLI version
+
+${chalk.yellow('Features:')}
+  ✔ Sync commands from GitHub
+  ✔ Run categorized commands
+  ✔ Favorite frequently used commands
+  ✔ Auto-refresh commands every 30 seconds
+  ✔ Offline support with local cache
+  ✔ Auto pull on CLI version update
+
+${chalk.yellow('Example:')}
+  cmdease
+  cmdease --version
+  cmdease --help
+
+Happy Coding! 🚀
+`);
+  process.exit(0);
+}
+
+// ✅ Handle --version flag
+if (process.argv.includes('--version')) {
+  const packageJson = await import('../package.json', { assert: { type: 'json' } });
+  console.log(`cmdease CLI version: ${packageJson.default.version}`);
+  process.exit(0);
+}
 
 function buildCommandList() {
   const commands = getCommands() || {};
   list = [];
 
   for (const category in commands) {
+    if (category === 'version') continue; // ✅ Skip version key
+
     for (const cmdName in commands[category]) {
       list.push({
         name: `${chalk.blue(category)} → ${chalk.green(cmdName)}`,
@@ -47,7 +86,7 @@ function buildCommandList() {
 
 function getCategories() {
   const commands = getCommands() || {};
-  return Object.keys(commands);
+  return Object.keys(commands).filter(key => key !== 'version'); // ✅ Skip version key
 }
 
 buildCommandList();
@@ -55,7 +94,7 @@ startConnectionMonitor();
 
 async function autoRefreshCommands(remoteUrl) {
   try {
-    await fetchRemoteCommands(remoteUrl);
+    await autoPullOnVersionChange(remoteUrl); // ✅ Auto pull on version change
     buildCommandList();
     console.log(chalk.yellow('🔄 Commands updated from remote.'));
   } catch (err) {
@@ -73,16 +112,8 @@ async function autoRefreshCommands(remoteUrl) {
   }, 30000);
 }
 
-const remoteUrl = 'https://raw.githubusercontent.com/annuk123/cmdease/main/.cmdpalette.json'; 
-
 (async () => {
   await autoRefreshCommands(remoteUrl);
-
-  if (process.argv.includes('--version')) {
-    const packageJson = await import('../package.json', { assert: { type: 'json' } });
-    console.log(`cmdease CLI version: ${packageJson.default.version}`);
-    process.exit(0);
-  }
 
   online = await isOnline();
 

@@ -9,7 +9,6 @@
     "Build Project (yarn)": "yarn build",
     "Build Project (bun)": "bun run build"
   },
-
   "UI Libraries": {
     "Install shadcn/ui (pnpm)": "pnpm add shadcn/ui",
     "Install Tailwind CSS (npm)": "npm install -D tailwindcss postcss autoprefixer",
@@ -26,7 +25,6 @@
     "shadcn Add Dropdown Menu": "npx shadcn@latest add dropdown-menu",
     "shadcn Add Toast": "npx shadcn@latest add toast"
   },
-
   "Databases": {
     "Install Convex (npm)": "npm install convex",
     "Install NeonDB Client (npm)": "npm install neon",
@@ -37,7 +35,6 @@
     "Install Supabase Client (npm)": "npm install @supabase/supabase-js",
     "Install Firebase Client (npm)": "npm install firebase"
   },
-
   "Prisma": {
     "Install Prisma (npm)": "npm install prisma --save-dev",
     "Install Prisma Client (npm)": "npm install @prisma/client",
@@ -46,7 +43,6 @@
     "Prisma Generate": "npx prisma generate",
     "Prisma Studio": "npx prisma studio"
   },
-
   "Docker": {
     "Docker Build": "docker build -t your-image-name .",
     "Docker Run": "docker run -p 3000:3000 your-image-name",
@@ -56,7 +52,6 @@
     "Docker Stop All": "docker stop $(docker ps -aq)",
     "Docker Remove All Containers": "docker rm $(docker ps -aq)"
   },
-
   "Git": {
     "Git Init": "git init",
     "Git Clone": "git clone <repository-url>",
@@ -68,21 +63,18 @@
     "Git Status": "git status",
     "Git Log": "git log --oneline"
   },
-
   "Supabase": {
     "Supabase Login": "npx supabase login",
     "Supabase Init": "npx supabase init",
     "Supabase Start": "npx supabase start",
     "Supabase DB Push": "npx supabase db push"
   },
-
   "Firebase": {
     "Firebase Login": "firebase login",
     "Firebase Init": "firebase init",
     "Firebase Deploy": "firebase deploy",
     "Firebase Emulator Start": "firebase emulators:start"
   },
-
   "CLI Tools": {
     "Vite Create": "npm create vite@latest",
     "Next.js Create": "npx create-next-app@latest",
@@ -90,7 +82,6 @@
     "SvelteKit Create": "npm create svelte@latest",
     "Remix Create": "npx create-remix@latest"
   },
-
   "Convex DB": {
     "Convex Dev Server": "npx convex dev",
     "Convex Codegen": "npx convex codegen",
@@ -98,12 +89,10 @@
     "Convex Import": "npx convex import",
     "Convex Export": "npx convex export"
   },
-
   "Testing & Linting": {
     "Run Tests (npm)": "npm test",
     "Lint Code (npm)": "npm run lint"
   },
-
   "Deployment": {
     "Deploy to Vercel": "vercel --prod",
     "Deploy to Netlify": "netlify deploy --prod",

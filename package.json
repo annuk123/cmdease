@@ -1,7 +1,7 @@
 {
   "name": "cmdease",
   "version": "1.0.0",
-  "description": "",
+  "description": "A powerful offline-first CLI command palette to quickly access and run commands.",
   "main": "index.js",
   "type": "module",
   "bin": {
@@ -10,9 +10,23 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "cli",
+    "command palette",
+    "offline-first",
+    "developer tools",
+    "cmdease"
+  ],
+  "author": "Annu Kumari",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/annuk123/cmdease.git"
+  },
+  "homepage": "https://github.com/annuk123/cmdease#readme",
+  "bugs": {
+    "url": "https://github.com/annuk123/cmdease/issues"
+  },
   "packageManager": "pnpm@10.8.1",
   "dependencies": {
     "axios": "^1.9.0",
