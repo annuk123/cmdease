@@ -1,34 +1,39 @@
-import { mutation, query } from './_generated/server';
+import { query, mutation } from './_generated/server';
 import { v } from 'convex/values';
 
 export const addFavorite = mutation({
   args: { cmdName: v.string(), category: v.string(), user: v.string() },
   handler: async (ctx, args) => {
-    await ctx.db.insert('favorites', args);
+    await ctx.db.insert('favorites', {
+      cmdName: args.cmdName,
+      category: args.category,
+      user: args.user,
+    });
   },
 });
 
-export const removeFavorite = mutation({
-  args: { cmdName: v.string(), category: v.string(), user: v.string() },
+export const getByName = query({
+  args: { cmdName: v.string(), category: v.string() },
   handler: async (ctx, args) => {
-    const favorites = await ctx.db
+    return await ctx.db
       .query('favorites')
-      .filter(q => q.eq(q.field('cmdName'), args.cmdName))
-      .filter(q => q.eq(q.field('category'), args.category))
-      .filter(q => q.eq(q.field('user'), args.user))
+      .filter((q) => q.eq(q.field('cmdName'), args.cmdName))
+      .filter((q) => q.eq(q.field('category'), args.category))
       .collect();
-
-    for (const fav of favorites) {
-      await ctx.db.delete(fav._id);
-    }
   },
 });
 
-export const getFavorites = query({
-  args: { user: v.string() },
+export const deleteFavorite = mutation({
+  args: { id: v.id('favorites') },
   handler: async (ctx, args) => {
-    return await ctx.db.query('favorites').filter(q => q.eq(q.field('user'), args.user)).collect();
+    await ctx.db.delete(args.id);
   },
 });
 
+export const getAllFavorites = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query('favorites').collect();
+  },
+});
 

@@ -1,4 +1,3 @@
-
 import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
 
@@ -7,7 +6,7 @@ export default defineSchema({
     v.object({
       cmdName: v.string(),
       category: v.string(),
-      user: v.string(), // For future multi-user support
+      user: v.string(),
     })
   ),
   history: defineTable(
@@ -15,7 +14,15 @@ export default defineSchema({
       cmdName: v.string(),
       category: v.string(),
       timestamp: v.number(),
-      user: v.string(), // For future multi-user support
+      user: v.string(),
+    })
+  ),
+  commands: defineTable(
+    v.object({
+      cmdName: v.string(),
+      category: v.string(),
+      type: v.string(),
+      user: v.string(),
     })
   ),
 });

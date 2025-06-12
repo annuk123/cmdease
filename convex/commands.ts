@@ -1,9 +1,20 @@
 // convex/commands.ts
+import { query, mutation } from './_generated/server';
 import { v } from 'convex/values';
+
+
+export const ping = query({
+  handler: async () => {
+    return 'pong';
+  },
+});
+
 export const getByType = query({
   args: { type: v.string() },
   handler: async (ctx, args) => {
-    return await ctx.db.query('commands').filter((q: { eq: (arg0: any, arg1: any) => any; field: (arg0: string) => any; }) => q.eq(q.field('type'), args.type)).collect();
+    return await ctx.db.query('commands')
+      .filter(q => q.eq(q.field('type'), args.type))
+      .collect();
   },
 });
 
@@ -13,11 +24,3 @@ export const deleteCommand = mutation({
     await ctx.db.delete(args.id);
   },
 });
-function query(arg0: { args: { type: any; }; handler: (ctx: any, args: any) => Promise<any>; }) {
-  throw new Error("Function not implemented.");
-}
-
-function mutation(arg0: { args: { id: any; }; handler: (ctx: any, args: any) => Promise<void>; }) {
-  throw new Error("Function not implemented.");
-}
-
