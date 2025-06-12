@@ -11,10 +11,20 @@
   },
 
   "UI Libraries": {
-    "Install shadcn (npm)": "npm install shadcn/ui",
+    "Install shadcn/ui (pnpm)": "pnpm add shadcn/ui",
     "Install Tailwind CSS (npm)": "npm install -D tailwindcss postcss autoprefixer",
     "Install Material UI (npm)": "npm install @mui/material @emotion/react @emotion/styled",
-    "Install Bootstrap (npm)": "npm install bootstrap"
+    "Install Bootstrap (npm)": "npm install bootstrap",
+    "shadcn Init": "npx shadcn@latest init",
+    "shadcn Add Button": "npx shadcn@latest add button",
+    "shadcn Add Input": "npx shadcn@latest add input",
+    "shadcn Add Dialog": "npx shadcn@latest add dialog",
+    "shadcn Add Alert Dialog": "npx shadcn@latest add alert-dialog",
+    "shadcn Add Tooltip": "npx shadcn@latest add tooltip",
+    "shadcn Add Card": "npx shadcn@latest add card",
+    "shadcn Add Sheet": "npx shadcn@latest add sheet",
+    "shadcn Add Dropdown Menu": "npx shadcn@latest add dropdown-menu",
+    "shadcn Add Toast": "npx shadcn@latest add toast"
   },
 
   "Databases": {
