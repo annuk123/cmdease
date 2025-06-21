@@ -55,10 +55,7 @@ program
 program.parse(process.argv);
 
 // ✅ Check for cmdpalette.json
-if (!fs.existsSync('./.cmdpalette.json')) {
-  console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
-  process.exit(1);
-}
+
 
 // ✅ Show custom help
 if (process.argv.includes('--help')) {
@@ -115,6 +112,11 @@ function buildCommandList() {
 }
 
 async function main() {
+    if (!fs.existsSync('./.cmdpalette.json')) {
+    console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
+    process.exit(1);
+  }
+  console.log(chalk.blue('👋 Welcome to cmdease CLI!'));
   try {
     await ensureCommands(remoteUrl);
     await autoPullOnVersionChange(remoteUrl);

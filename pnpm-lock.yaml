@@ -32,6 +32,9 @@ importers:
       inquirer-autocomplete-prompt:
         specifier: ^1.4.0
         version: 1.4.0(inquirer@8.2.5)
+      lodash.isequal:
+        specifier: ^4.5.0
+        version: 4.5.0
       ora:
         specifier: ^8.2.0
         version: 8.2.0
@@ -511,6 +514,10 @@ packages:
   jwt-decode@4.0.0:
     resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
     engines: {node: '>=18'}
+
+  lodash.isequal@4.5.0:
+    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
@@ -1124,6 +1131,8 @@ snapshots:
   isexe@2.0.0: {}
 
   jwt-decode@4.0.0: {}
+
+  lodash.isequal@4.5.0: {}
 
   lodash@4.17.21: {}
 
