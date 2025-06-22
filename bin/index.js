@@ -6,10 +6,10 @@ inquirer.registerPrompt('autocomplete', autocompletePrompt);
 
 import { program } from 'commander';
 import chalk from 'chalk';
-import shell from 'shelljs';
 import fs from 'fs';
 import fuzzy from 'fuzzy';
 import ora from 'ora';
+import { runInteractiveCommand } from '../lib/commandExecutor.js';
 
 import { 
   fetchRemoteCommands, 
@@ -82,7 +82,7 @@ ${chalk.yellow('Example:')}
   cmdease --version
   cmdease --help
 
-Happy Coding! 🚀
+Happy Coding! 
 `);
   process.exit(0);
 }
@@ -168,8 +168,8 @@ async function main() {
 
     const selected = list.find(item => item.value === cmd);
 
-    console.log(chalk.blue(`\n🚀 Running: ${cmd}\n`));
-    shell.exec(cmd);
+console.log(chalk.blue(`\n🚀 Running: ${cmd}\n`));
+await runInteractiveCommand(cmd);
 
     await addToHistory(selected);
 
