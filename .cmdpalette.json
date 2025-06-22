@@ -3,10 +3,10 @@
     "Install UI Library": {
       "shadcn/ui": {
         "Install With": {
-          "npm": "npm install shadcn/ui",
-          "pnpm": "pnpm add shadcn/ui",
-          "yarn": "yarn add shadcn/ui",
-          "bun": "bun add shadcn/ui"
+          "npm": "npm install shadcn@latest",
+          "pnpm": "pnpm add shadcn@latest",
+          "yarn": "yarn add shadcn@latest",
+          "bun": "bun add shadcn@latest"
         }
       },
       "Tailwind CSS": {
@@ -15,6 +15,12 @@
           "pnpm": "pnpm add -D tailwindcss postcss autoprefixer",
           "yarn": "yarn add -D tailwindcss postcss autoprefixer",
           "bun": "bun add -d tailwindcss postcss autoprefixer"
+        },
+        "Init": {
+          "npm": "npx tailwindcss init -p",
+          "pnpm": "pnpm exec tailwindcss init -p",
+          "yarn": "yarn tailwindcss init -p",
+          "bun": "bun x tailwindcss init -p"
         }
       },
       "Material UI": {
@@ -35,15 +41,15 @@
       }
     },
     "Add UI Components (shadcn/ui)": {
-      "Button": "npx shadcn@latest add button",
-      "Input": "npx shadcn@latest add input",
-      "Dialog": "npx shadcn@latest add dialog",
-      "Alert Dialog": "npx shadcn@latest add alert-dialog",
-      "Tooltip": "npx shadcn@latest add tooltip",
-      "Card": "npx shadcn@latest add card",
-      "Sheet": "npx shadcn@latest add sheet",
-      "Dropdown Menu": "npx shadcn@latest add dropdown-menu",
-      "Toast": "npx shadcn@latest add toast"
+      "Button": "npx shadcn add button",
+      "Input": "npx shadcn add input",
+      "Dialog": "npx shadcn add dialog",
+      "Alert Dialog": "npx shadcn add alert-dialog",
+      "Tooltip": "npx shadcn add tooltip",
+      "Card": "npx shadcn add card",
+      "Sheet": "npx shadcn add sheet",
+      "Dropdown Menu": "npx shadcn add dropdown-menu",
+      "Toast": "npx shadcn add toast"
     }
   },
 
@@ -59,6 +65,12 @@
       "pnpm": "pnpm build",
       "yarn": "yarn build",
       "bun": "bun run build"
+    },
+    "Preview Build": {
+      "npm": "npm run preview",
+      "pnpm": "pnpm preview",
+      "yarn": "yarn preview",
+      "bun": "bun run preview"
     }
   },
 
@@ -92,8 +104,8 @@
     "Docker Commands": {
       "Docker Build": "docker build -t your-image-name .",
       "Docker Run": "docker run -p 3000:3000 your-image-name",
-      "Docker Compose Up": "docker-compose up",
-      "Docker Compose Down": "docker-compose down",
+      "Docker Compose Up": "docker compose up",
+      "Docker Compose Down": "docker compose down",
       "Docker List Containers": "docker ps -a",
       "Docker Stop All": "docker stop $(docker ps -aq)",
       "Docker Remove All Containers": "docker rm $(docker ps -aq)"
