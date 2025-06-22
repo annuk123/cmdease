@@ -1,101 +1,169 @@
 {
-  "Development": {
-    "Start Server (npm)": "npm run dev",
-    "Start Server (pnpm)": "pnpm dev",
-    "Start Server (yarn)": "yarn dev",
-    "Start Server (bun)": "bun run dev",
-    "Build Project (npm)": "npm run build",
-    "Build Project (pnpm)": "pnpm build",
-    "Build Project (yarn)": "yarn build",
-    "Build Project (bun)": "bun run build"
-  },
   "UI Libraries": {
-    "Install shadcn/ui (pnpm)": "pnpm add shadcn/ui",
-    "Install Tailwind CSS (npm)": "npm install -D tailwindcss postcss autoprefixer",
-    "Install Material UI (npm)": "npm install @mui/material @emotion/react @emotion/styled",
-    "Install Bootstrap (npm)": "npm install bootstrap",
-    "shadcn Init": "npx shadcn@latest init",
-    "shadcn Add Button": "npx shadcn@latest add button",
-    "shadcn Add Input": "npx shadcn@latest add input",
-    "shadcn Add Dialog": "npx shadcn@latest add dialog",
-    "shadcn Add Alert Dialog": "npx shadcn@latest add alert-dialog",
-    "shadcn Add Tooltip": "npx shadcn@latest add tooltip",
-    "shadcn Add Card": "npx shadcn@latest add card",
-    "shadcn Add Sheet": "npx shadcn@latest add sheet",
-    "shadcn Add Dropdown Menu": "npx shadcn@latest add dropdown-menu",
-    "shadcn Add Toast": "npx shadcn@latest add toast"
+    "Install UI Library": {
+      "shadcn/ui": {
+        "Install With": {
+          "npm": "npm install shadcn/ui",
+          "pnpm": "pnpm add shadcn/ui",
+          "yarn": "yarn add shadcn/ui",
+          "bun": "bun add shadcn/ui"
+        }
+      },
+      "Tailwind CSS": {
+        "Install With": {
+          "npm": "npm install -D tailwindcss postcss autoprefixer",
+          "pnpm": "pnpm add -D tailwindcss postcss autoprefixer",
+          "yarn": "yarn add -D tailwindcss postcss autoprefixer",
+          "bun": "bun add -d tailwindcss postcss autoprefixer"
+        }
+      },
+      "Material UI": {
+        "Install With": {
+          "npm": "npm install @mui/material @emotion/react @emotion/styled",
+          "pnpm": "pnpm add @mui/material @emotion/react @emotion/styled",
+          "yarn": "yarn add @mui/material @emotion/react @emotion/styled",
+          "bun": "bun add @mui/material @emotion/react @emotion/styled"
+        }
+      },
+      "Bootstrap": {
+        "Install With": {
+          "npm": "npm install bootstrap",
+          "pnpm": "pnpm add bootstrap",
+          "yarn": "yarn add bootstrap",
+          "bun": "bun add bootstrap"
+        }
+      }
+    },
+    "Add UI Components (shadcn/ui)": {
+      "Button": "npx shadcn@latest add button",
+      "Input": "npx shadcn@latest add input",
+      "Dialog": "npx shadcn@latest add dialog",
+      "Alert Dialog": "npx shadcn@latest add alert-dialog",
+      "Tooltip": "npx shadcn@latest add tooltip",
+      "Card": "npx shadcn@latest add card",
+      "Sheet": "npx shadcn@latest add sheet",
+      "Dropdown Menu": "npx shadcn@latest add dropdown-menu",
+      "Toast": "npx shadcn@latest add toast"
+    }
   },
+
+  "Development": {
+    "Start Server": {
+      "npm": "npm run dev",
+      "pnpm": "pnpm dev",
+      "yarn": "yarn dev",
+      "bun": "bun run dev"
+    },
+    "Build Project": {
+      "npm": "npm run build",
+      "pnpm": "pnpm build",
+      "yarn": "yarn build",
+      "bun": "bun run build"
+    }
+  },
+
   "Databases": {
-    "Install Convex (npm)": "npm install convex",
-    "Install NeonDB Client (npm)": "npm install neon",
-    "Install MongoDB Client (npm)": "npm install mongodb",
-    "Install PostgreSQL Client (npm)": "npm install pg",
-    "Install MySQL Client (npm)": "npm install mysql2",
-    "Install Redis Client (npm)": "npm install ioredis",
-    "Install Supabase Client (npm)": "npm install @supabase/supabase-js",
-    "Install Firebase Client (npm)": "npm install firebase"
+    "Install Database Client": {
+      "Convex": "npm install convex",
+      "NeonDB": "npm install neon",
+      "MongoDB": "npm install mongodb",
+      "PostgreSQL": "npm install pg",
+      "MySQL": "npm install mysql2",
+      "Redis": "npm install ioredis",
+      "Supabase": "npm install @supabase/supabase-js",
+      "Firebase": "npm install firebase"
+    }
   },
+
   "Prisma": {
-    "Install Prisma (npm)": "npm install prisma --save-dev",
-    "Install Prisma Client (npm)": "npm install @prisma/client",
-    "Initialize Prisma": "npx prisma init",
-    "Prisma Migrate Dev": "npx prisma migrate dev",
-    "Prisma Generate": "npx prisma generate",
-    "Prisma Studio": "npx prisma studio"
+    "Install Prisma": {
+      "Prisma CLI": "npm install prisma --save-dev",
+      "Prisma Client": "npm install @prisma/client"
+    },
+    "Setup & Commands": {
+      "Prisma Init": "npx prisma init",
+      "Prisma Migrate Dev": "npx prisma migrate dev",
+      "Prisma Generate": "npx prisma generate",
+      "Prisma Studio": "npx prisma studio"
+    }
   },
+
   "Docker": {
-    "Docker Build": "docker build -t your-image-name .",
-    "Docker Run": "docker run -p 3000:3000 your-image-name",
-    "Docker Compose Up": "docker-compose up",
-    "Docker Compose Down": "docker-compose down",
-    "Docker List Containers": "docker ps -a",
-    "Docker Stop All": "docker stop $(docker ps -aq)",
-    "Docker Remove All Containers": "docker rm $(docker ps -aq)"
+    "Docker Commands": {
+      "Docker Build": "docker build -t your-image-name .",
+      "Docker Run": "docker run -p 3000:3000 your-image-name",
+      "Docker Compose Up": "docker-compose up",
+      "Docker Compose Down": "docker-compose down",
+      "Docker List Containers": "docker ps -a",
+      "Docker Stop All": "docker stop $(docker ps -aq)",
+      "Docker Remove All Containers": "docker rm $(docker ps -aq)"
+    }
   },
+
   "Git": {
-    "Git Init": "git init",
-    "Git Clone": "git clone <repository-url>",
-    "Git Add All": "git add .",
-    "Git Commit": "git commit -m 'your message'",
-    "Git Push": "git push origin main",
-    "Git Pull": "git pull origin main",
-    "Git Checkout": "git checkout -b new-branch",
-    "Git Status": "git status",
-    "Git Log": "git log --oneline"
+    "Git Basic Commands": {
+      "Git Init": "git init",
+      "Git Clone": "git clone <repository-url>",
+      "Git Add All": "git add .",
+      "Git Commit": "git commit -m 'your message'",
+      "Git Push": "git push origin main",
+      "Git Pull": "git pull origin main",
+      "Git Checkout New Branch": "git checkout -b new-branch",
+      "Git Status": "git status",
+      "Git Log": "git log --oneline"
+    }
   },
+
   "Supabase": {
-    "Supabase Login": "npx supabase login",
-    "Supabase Init": "npx supabase init",
-    "Supabase Start": "npx supabase start",
-    "Supabase DB Push": "npx supabase db push"
+    "Supabase Commands": {
+      "Login": "npx supabase login",
+      "Init": "npx supabase init",
+      "Start Local": "npx supabase start",
+      "DB Push": "npx supabase db push"
+    }
   },
+
   "Firebase": {
-    "Firebase Login": "firebase login",
-    "Firebase Init": "firebase init",
-    "Firebase Deploy": "firebase deploy",
-    "Firebase Emulator Start": "firebase emulators:start"
+    "Firebase Commands": {
+      "Login": "firebase login",
+      "Init": "firebase init",
+      "Deploy": "firebase deploy",
+      "Start Emulator": "firebase emulators:start"
+    }
   },
+
   "CLI Tools": {
-    "Vite Create": "npm create vite@latest",
-    "Next.js Create": "npx create-next-app@latest",
-    "Astro Create": "npm create astro@latest",
-    "SvelteKit Create": "npm create svelte@latest",
-    "Remix Create": "npx create-remix@latest"
+    "Create New Project": {
+      "Vite": "npm create vite@latest",
+      "Next.js": "npx create-next-app@latest",
+      "Astro": "npm create astro@latest",
+      "SvelteKit": "npm create svelte@latest",
+      "Remix": "npx create-remix@latest"
+    }
   },
+
   "Convex DB": {
-    "Convex Dev Server": "npx convex dev",
-    "Convex Codegen": "npx convex codegen",
-    "Convex Deploy": "npx convex deploy",
-    "Convex Import": "npx convex import",
-    "Convex Export": "npx convex export"
+    "Convex Commands": {
+      "Dev Server": "npx convex dev",
+      "Codegen": "npx convex codegen",
+      "Deploy": "npx convex deploy",
+      "Import": "npx convex import",
+      "Export": "npx convex export"
+    }
   },
+
   "Testing & Linting": {
-    "Run Tests (npm)": "npm test",
-    "Lint Code (npm)": "npm run lint"
+    "Testing Commands": {
+      "Run Tests": "npm test",
+      "Lint Code": "npm run lint"
+    }
   },
+
   "Deployment": {
-    "Deploy to Vercel": "vercel --prod",
-    "Deploy to Netlify": "netlify deploy --prod",
-    "Deploy to Railway": "railway up"
+    "Deploy With": {
+      "Vercel": "vercel --prod",
+      "Netlify": "netlify deploy --prod",
+      "Railway": "railway up"
+    }
   }
 }
