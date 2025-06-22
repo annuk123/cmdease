@@ -115,12 +115,11 @@ async function main() {
     console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
     process.exit(1);
   }
-
   console.log(chalk.blue('👋 Welcome to cmdease CLI!'));
+
   try {
     await ensureCommands(remoteUrl);
     await autoPullOnVersionChange(remoteUrl);
-    buildCommandList();
     startConnectionMonitor();
     await autoRefreshCommands(remoteUrl);
 
@@ -136,17 +135,9 @@ async function main() {
 
     syncWhenOnline();
 
-    await promptNavigator(); // 👈 Call the new prompt navigator
-  } catch (err) {
-    console.error(chalk.red('❌ Unexpected error:'), err);
-  }
-}
-
-// ✅ Prompt Navigator with Back Option
-async function promptNavigator() {
-  try {
     const spinner = ora('Fetching categories...').start();
-    categories = getCategories();
+    const commands = getCommands();
+    const categories = Object.keys(commands).filter(key => key !== 'version');
 
     if (categories.length === 0) {
       spinner.fail('⚠️ No categories available. Try to sync now.');
@@ -160,62 +151,50 @@ async function promptNavigator() {
         type: 'list',
         name: 'selectedCategory',
         message: 'Select a category:',
-        choices: [...categories.map(cat => ({ name: cat, value: cat })), { name: 'Exit', value: 'exit' }]
+        choices: categories.map(cat => ({ name: cat, value: cat })),
       }
     ]);
 
-    if (selectedCategory === 'exit') {
-      console.log(chalk.blue('\n👋 Exiting cmdease CLI. Bye!'));
-      process.exit(0);
-    }
-
     console.log(`👉 You selected: ${selectedCategory}`);
 
- const { cmd } = await inquirer.prompt([
-  {
-    type: 'autocomplete',
-    name: 'cmd',
-    message: `${online ? chalk.green('Online') : chalk.red('Offline')}  Start typing to search a command:`,
-    source: (answersSoFar, input) => searchCommands(selectedCategory, input)
+    // ✅ Start recursive navigation
+    await promptNavigator(commands[selectedCategory]);
+
+  } catch (err) {
+    console.error(chalk.red('❌ Unexpected error:'), err);
   }
-]);
-
-// cmd is now the full object → extract command properly
-console.log(chalk.blue(`\n🚀 Running: ${cmd.command}\n`));
-await runInteractiveCommand(cmd.command);
-
-await addToHistory(cmd);
+}
 
 
-    const selected = cmd; // cmd is now the object with command, category, cmdName
-
-    console.log(chalk.blue(`\n🚀 Running: ${selected.command}\n`));
-    await runInteractiveCommand(selected.command);
-
-    await addToHistory(selected);
-
-    const { favorite } = await inquirer.prompt([
-      { type: 'confirm', name: 'favorite', message: '⭐ Add/Remove this command from favorites?', default: false }
-    ]);
-
-    if (favorite) {
-      await toggleFavorite(selected);
+// ✅ Prompt Navigator with Back Option
+async function promptNavigator(node) {
+  try {
+    // If node is a string -> execute directly
+    if (typeof node === 'string') {
+      console.log(chalk.blue(`\n🚀 Running: ${node}\n`));
+      await runInteractiveCommand(node);
+      return;
     }
 
-    const { continueSession } = await inquirer.prompt([
-      { type: 'confirm', name: 'continueSession', message: '✨ Do you want to run another command?', default: true }
+    const choices = Object.keys(node);
+
+    const { selectedKey } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'selectedKey',
+        message: 'Select an option:',
+        choices: choices,
+      }
     ]);
 
-    if (continueSession) {
-      await promptNavigator(); // 👈 Loop again
-    } else {
-      console.log(chalk.blue('\n👋 Exiting cmdease CLI. Bye!'));
-      process.exit(0);
-    }
+    const nextNode = node[selectedKey];
+
+    await promptNavigator(nextNode); // Go deeper recursively
   } catch (err) {
     console.error(chalk.red('❌ Unexpected error in navigator:'), err);
   }
 }
+
 
 async function autoRefreshCommands(remoteUrl) {
   try {
