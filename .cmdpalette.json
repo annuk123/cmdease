@@ -41,15 +41,76 @@
       }
     },
     "Add UI Components (shadcn/ui)": {
-      "Button": "npx shadcn add button",
-      "Input": "npx shadcn add input",
-      "Dialog": "npx shadcn add dialog",
-      "Alert Dialog": "npx shadcn add alert-dialog",
-      "Tooltip": "npx shadcn add tooltip",
-      "Card": "npx shadcn add card",
-      "Sheet": "npx shadcn add sheet",
-      "Dropdown Menu": "npx shadcn add dropdown-menu",
-      "Toast": "npx shadcn add toast"
+      "Button": {
+        "npm": "npx shadcn add button",
+        "pnpm": "pnpm exec shadcn add button",
+        "yarn": "yarn shadcn add button",
+        "bun": "bun x shadcn add button"
+      },
+      "Input": {
+        "npm": "npx shadcn add input",
+        "pnpm": "pnpm exec shadcn add input",
+        "yarn": "yarn shadcn add input",
+        "bun": "bun x shadcn add input"
+      },
+      "Dialog": {
+        "npm": "npx shadcn add dialog",
+        "pnpm": "pnpm exec shadcn add dialog",
+        "yarn": "yarn shadcn add dialog",
+        "bun": "bun x shadcn add dialog"
+      },
+      "Alert Dialog": {
+        "npm": "npx shadcn add alert-dialog",
+        "pnpm": "pnpm exec shadcn add alert-dialog",
+        "yarn": "yarn shadcn add alert-dialog",
+        "bun": "bun x shadcn add alert-dialog"
+      },
+      "Tooltip": {
+        "npm": "npx shadcn add tooltip",
+        "pnpm": "pnpm exec shadcn add tooltip",
+        "yarn": "yarn shadcn add tooltip",
+        "bun": "bun x shadcn add tooltip"
+      },
+      "Card": {
+        "npm": "npx shadcn add card",
+        "pnpm": "pnpm exec shadcn add card",
+        "yarn": "yarn shadcn add card",
+        "bun": "bun x shadcn add card"
+      },
+      "Sheet": {
+        "npm": "npx shadcn add sheet",
+        "pnpm": "pnpm exec shadcn add sheet",
+        "yarn": "yarn shadcn add sheet",
+        "bun": "bun x shadcn add sheet"
+      },
+      "Dropdown Menu": {
+        "npm": "npx shadcn add dropdown-menu",
+        "pnpm": "pnpm exec shadcn add dropdown-menu",
+        "yarn": "yarn shadcn add dropdown-menu",
+        "bun": "bun x shadcn add dropdown-menu"
+      },
+      "Toast": {
+        "npm": "npx shadcn add toast",
+        "pnpm": "pnpm exec shadcn add toast",
+        "yarn": "yarn shadcn add toast",
+        "bun": "bun x shadcn add toast"
+      }
+    }
+  },
+
+
+  "Package Managers": {
+    "Install Package Manager": {
+      "npm": "npm install -g npm",
+      "pnpm": "npm install -g pnpm",
+      "yarn": "npm install -g yarn",
+      "bun": "curl https://bun.sh/install | bash"
+    },
+    "Update Package Manager": {
+      "npm": "npm install -g npm@latest",
+      "pnpm": "pnpm add -g pnpm@latest",
+      "yarn": "yarn global add yarn@latest",
+      "bun": "bun upgrade"
     }
   },
 
@@ -76,27 +137,97 @@
 
   "Databases": {
     "Install Database Client": {
-      "Convex": "npm install convex",
-      "NeonDB": "npm install neon",
-      "MongoDB": "npm install mongodb",
-      "PostgreSQL": "npm install pg",
-      "MySQL": "npm install mysql2",
-      "Redis": "npm install ioredis",
-      "Supabase": "npm install @supabase/supabase-js",
-      "Firebase": "npm install firebase"
+      "Convex": {
+        "npm": "npm install convex",
+        "pnpm": "pnpm add convex",
+        "yarn": "yarn add convex",
+        "bun": "bun add convex"
+      },
+      "NeonDB": {
+        "npm": "npm install neon",
+        "pnpm": "pnpm add neon",
+        "yarn": "yarn add neon",
+        "bun": "bun add neon"
+      },
+      "MongoDB": {
+        "npm": "npm install mongodb",
+        "pnpm": "pnpm add mongodb",
+        "yarn": "yarn add mongodb",
+        "bun": "bun add mongodb"
+      },
+      "PostgreSQL": {
+        "npm": "npm install pg",
+        "pnpm": "pnpm add pg",
+        "yarn": "yarn add pg",
+        "bun": "bun add pg"
+      },
+      "MySQL": {
+        "npm": "npm install mysql2",
+        "pnpm": "pnpm add mysql2",
+        "yarn": "yarn add mysql2",
+        "bun": "bun add mysql2"
+      },
+      "Redis": {
+        "npm": "npm install ioredis",
+        "pnpm": "pnpm add ioredis",
+        "yarn": "yarn add ioredis",
+        "bun": "bun add ioredis"
+      },
+      "Supabase": {
+        "npm": "npm install @supabase/supabase-js",
+        "pnpm": "pnpm add @supabase/supabase-js",
+        "yarn": "yarn add @supabase/supabase-js",
+        "bun": "bun add @supabase/supabase-js"
+      },
+      "Firebase": {
+        "npm": "npm install firebase",
+        "pnpm": "pnpm add firebase",
+        "yarn": "yarn add firebase",
+        "bun": "bun add firebase"
+      }
     }
   },
 
   "Prisma": {
     "Install Prisma": {
-      "Prisma CLI": "npm install prisma --save-dev",
-      "Prisma Client": "npm install @prisma/client"
+      "Prisma CLI": {
+        "npm": "npm install prisma --save-dev",
+        "pnpm": "pnpm add -D prisma",
+        "yarn": "yarn add -D prisma",
+        "bun": "bun add -d prisma"
+      },
+      "Prisma Client": {
+        "npm": "npm install @prisma/client",
+        "pnpm": "pnpm add @prisma/client",
+        "yarn": "yarn add @prisma/client",
+        "bun": "bun add @prisma/client"
+      }
     },
     "Setup & Commands": {
-      "Prisma Init": "npx prisma init",
-      "Prisma Migrate Dev": "npx prisma migrate dev",
-      "Prisma Generate": "npx prisma generate",
-      "Prisma Studio": "npx prisma studio"
+      "Prisma Init": {
+        "npm": "npx prisma init",
+        "pnpm": "pnpm exec prisma init",
+        "yarn": "yarn prisma init",
+        "bun": "bun x prisma init"
+      },
+      "Prisma Migrate Dev": {
+        "npm": "npx prisma migrate dev",
+        "pnpm": "pnpm exec prisma migrate dev",
+        "yarn": "yarn prisma migrate dev",
+        "bun": "bun x prisma migrate dev"
+      },
+      "Prisma Generate": {
+        "npm": "npx prisma generate",
+        "pnpm": "pnpm exec prisma generate",
+        "yarn": "yarn prisma generate",
+        "bun": "bun x prisma generate"
+      },
+      "Prisma Studio": {
+        "npm": "npx prisma studio",
+        "pnpm": "pnpm exec prisma studio",
+        "yarn": "yarn prisma studio",
+        "bun": "bun x prisma studio"
+      }
     }
   },
 
@@ -128,10 +259,30 @@
 
   "Supabase": {
     "Supabase Commands": {
-      "Login": "npx supabase login",
-      "Init": "npx supabase init",
-      "Start Local": "npx supabase start",
-      "DB Push": "npx supabase db push"
+      "Login": {
+        "npm": "npx supabase login",
+        "pnpm": "pnpm exec supabase login",
+        "yarn": "yarn supabase login",
+        "bun": "bun x supabase login"
+      },
+      "Init": {
+        "npm": "npx supabase init",
+        "pnpm": "pnpm exec supabase init",
+        "yarn": "yarn supabase init",
+        "bun": "bun x supabase init"
+      },
+      "Start Local": {
+        "npm": "npx supabase start",
+        "pnpm": "pnpm exec supabase start",
+        "yarn": "yarn supabase start",
+        "bun": "bun x supabase start"
+      },
+      "DB Push": {
+        "npm": "npx supabase db push",
+        "pnpm": "pnpm exec supabase db push",
+        "yarn": "yarn supabase db push",
+        "bun": "bun x supabase db push"
+      }
     }
   },
 
@@ -146,28 +297,88 @@
 
   "CLI Tools": {
     "Create New Project": {
-      "Vite": "npm create vite@latest",
-      "Next.js": "npx create-next-app@latest",
-      "Astro": "npm create astro@latest",
-      "SvelteKit": "npm create svelte@latest",
-      "Remix": "npx create-remix@latest"
+      "Vite": {
+        "npm": "npm create vite@latest",
+        "pnpm": "pnpm create vite@latest",
+        "yarn": "yarn create vite",
+        "bun": "bun create vite@latest"
+      },
+      "Next.js": {
+        "npm": "npx create-next-app@latest",
+        "pnpm": "pnpm create next-app@latest",
+        "yarn": "yarn create next-app",
+        "bun": "bun create next-app@latest"
+      },
+      "Astro": {
+        "npm": "npm create astro@latest",
+        "pnpm": "pnpm create astro@latest",
+        "yarn": "yarn create astro",
+        "bun": "bun create astro@latest"
+      },
+      "SvelteKit": {
+        "npm": "npm create svelte@latest",
+        "pnpm": "pnpm create svelte@latest",
+        "yarn": "yarn create svelte",
+        "bun": "bun create svelte@latest"
+      },
+      "Remix": {
+        "npm": "npx create-remix@latest",
+        "pnpm": "pnpm create remix@latest",
+        "yarn": "yarn create remix",
+        "bun": "bun create remix@latest"
+      }
     }
   },
 
   "Convex DB": {
     "Convex Commands": {
-      "Dev Server": "npx convex dev",
-      "Codegen": "npx convex codegen",
-      "Deploy": "npx convex deploy",
-      "Import": "npx convex import",
-      "Export": "npx convex export"
+      "Dev Server": {
+        "npm": "npx convex dev",
+        "pnpm": "pnpm exec convex dev",
+        "yarn": "yarn convex dev",
+        "bun": "bun x convex dev"
+      },
+      "Codegen": {
+        "npm": "npx convex codegen",
+        "pnpm": "pnpm exec convex codegen",
+        "yarn": "yarn convex codegen",
+        "bun": "bun x convex codegen"
+      },
+      "Deploy": {
+        "npm": "npx convex deploy",
+        "pnpm": "pnpm exec convex deploy",
+        "yarn": "yarn convex deploy",
+        "bun": "bun x convex deploy"
+      },
+      "Import": {
+        "npm": "npx convex import",
+        "pnpm": "pnpm exec convex import",
+        "yarn": "yarn convex import",
+        "bun": "bun x convex import"
+      },
+      "Export": {
+        "npm": "npx convex export",
+        "pnpm": "pnpm exec convex export",
+        "yarn": "yarn convex export",
+        "bun": "bun x convex export"
+      }
     }
   },
 
   "Testing & Linting": {
     "Testing Commands": {
-      "Run Tests": "npm test",
-      "Lint Code": "npm run lint"
+      "Run Tests": {
+        "npm": "npm test",
+        "pnpm": "pnpm test",
+        "yarn": "yarn test",
+        "bun": "bun test"
+      },
+      "Lint Code": {
+        "npm": "npm run lint",
+        "pnpm": "pnpm lint",
+        "yarn": "yarn lint",
+        "bun": "bun run lint"
+      }
     }
   },
 
@@ -177,5 +388,156 @@
       "Netlify": "netlify deploy --prod",
       "Railway": "railway up"
     }
-  }
+  },
+
+  "Environment Variables": {
+    "Set Environment Variable": {
+      "Linux/Mac": "export VARIABLE_NAME=value",
+      "Windows": "set VARIABLE_NAME=value"
+    },
+    "Access Environment Variable in Node.js": {
+      "Code Snippet": "const value = process.env.VARIABLE_NAME;"
+    }
+  },
+
+  "Miscellaneous": {
+    "Clear Console": {
+      "npm": "clear",
+      "pnpm": "clear",
+      "yarn": "clear",
+      "bun": "clear"
+    },
+    "Open Project in VS Code": {
+      "Command": "code ."
+    }
+  },
+  "Version Control": {
+    "Git Commands": {
+      "Initialize Repository": "git init",
+      "Clone Repository": "git clone <repository-url>",
+      "Add Changes": "git add .",
+      "Commit Changes": "git commit -m 'your message'",
+      "Push Changes": "git push origin main",
+      "Pull Changes": "git pull origin main",
+      "Create New Branch": "git checkout -b new-branch",
+      "Check Status": "git status",
+      "View Log": "git log --oneline"
+    }
+  },
+  "Code Editors": {
+    "VS Code": {
+      "Open Command Palette": "Ctrl + Shift + P",
+      "Open Terminal": "Ctrl + `",
+      "Format Document": "Shift + Alt + F",
+      "Toggle Sidebar": "Ctrl + B",
+      "Search Files": "Ctrl + P",
+      "Go to Line": "Ctrl + G"
+    },
+    "WebStorm": {
+      "Open Command Palette": "Ctrl + Shift + A",
+      "Open Terminal": "Alt + F12",
+      "Reformat Code": "Ctrl + Alt + L",
+      "Toggle Project View": "Alt + 1",
+      "Find in Path": "Ctrl + Shift + F"
+    }
+  },
+  "Terminal Commands": {
+    "Basic Commands": {
+      "List Files": "ls -la",
+      "Change Directory": "cd <directory-name>",
+      "Create Directory": "mkdir <directory-name>",
+      "Remove File": "rm <file-name>",
+      "Remove Directory": "rm -rf <directory-name>",
+      "Copy File": "cp <source> <destination>",
+      "Move File": "mv <source> <destination>",
+      "View File Contents": "cat <file-name>",
+      "Search in File": "grep 'search-term' <file-name>",
+      "Open File in Editor": "nano <file-name> or vim <file-name>",
+      "Clear Terminal": "clear",
+      "Show Current Directory": "pwd",
+      "Show Disk Usage": "df -h",
+      "Show Running Processes": "ps aux",
+      "Kill Process": "kill <process-id>",
+      "Show Network Configuration": "ifconfig or ip a",
+      "Ping Host": "ping <host-name>",
+      "Download File": "curl -O <file-url> or wget <file-url>",
+      "Check System Uptime": "uptime",
+      "Check System Load": "top or htop",
+      "Check Memory Usage": "free -h",
+      "Check Disk Space": "du -sh <directory-name>",
+      "Check Environment Variables": "printenv or env",
+      "Show Git Status": "git status",
+      "Show Git Log": "git log --oneline",
+      "Show Git Branches": "git branch",
+      "Show Git Remote": "git remote -v",
+      "Show Git Diff": "git diff",
+      "Show Git Stash": "git stash list",
+      "Show Git Tags": "git tag",
+      "Show Git Config": "git config --list", 
+      "Show Git History": "git reflog",
+      "Show Git Blame": "git blame <file-name>",
+      "Show Git Shortlog": "git shortlog -s -n",
+      "Show Git Cherry": "git cherry -v",
+      "Show Git Submodules": "git submodule status",
+      "Show Git Hooks": "ls .git/hooks",
+      "Show Git Attributes": "cat .gitattributes",
+      "Show Git Ignore": "cat .gitignore",
+      "Show Git Remotes": "git remote show origin",
+      "Show Git Config File": "cat .git/config",
+      "Show Git Version": "git --version",
+      "Show Node.js Version": "node -v",
+      "Show npm Version": "npm -v", 
+      "Show pnpm Version": "pnpm -v",
+      "Show Yarn Version": "yarn -v",
+      "Show Bun Version": "bun -v",
+      "Show Docker Version": "docker -v",
+      "Show Docker Compose Version": "docker compose version",
+      "Show Kubernetes Version": "kubectl version --short",
+      "Show Helm Version": "helm version",
+      "Show Terraform Version": "terraform -version",
+      "Show AWS CLI Version": "aws --version",
+      "Show Azure CLI Version": "az --version",
+      "Show GCP CLI Version": "gcloud version",
+      "Show Firebase CLI Version": "firebase --version",
+      "Show Supabase CLI Version": "supabase --version",
+      "Show Convex CLI Version": "convex --version",
+      "Show Prisma CLI Version": "prisma -v", 
+      "Show Vercel CLI Version": "vercel --version",
+      "Show Netlify CLI Version": "netlify --version",
+      "Show Railway CLI Version": "railway --version",
+      "Show GitHub CLI Version": "gh --version",
+      "Show GitLab CLI Version": "glab --version",
+      "Show Bitbucket CLI Version": "bb --version"
+    }
+  },
+  "Documentation": {
+    "Official Documentation": {
+      "shadcn/ui": "https://ui.shadcn.com/docs",
+      "Tailwind CSS": "https://tailwindcss.com/docs",
+      "Material UI": "https://mui.com/material-ui/getting-started/overview/",
+      "Bootstrap": "https://getbootstrap.com/docs/5.3/getting-started/introduction/",
+      "NeonDB": "https://neon.tech/docs", 
+      "MongoDB": "https://www.mongodb.com/docs/",
+      "PostgreSQL": "https://www.postgresql.org/docs/",
+      "MySQL": "https://dev.mysql.com/doc/",
+      "Redis": "https://redis.io/documentation",
+      "Supabase": "https://supabase.com/docs",
+      "Firebase": "https://firebase.google.com/docs",
+      "Prisma": "https://www.prisma.io/docs",
+      "Docker": "https://docs.docker.com/get-started/",
+      "Git": "https://git-scm.com/doc",
+      "Vite": "https://vitejs.dev/guide/",
+      "Next.js": "https://nextjs.org/docs",
+      "Astro": "https://docs.astro.build/",
+      "SvelteKit": "https://kit.svelte.dev/docs",
+      "Remix": "https://remix.run/docs",
+      "Convex DB": "https://docs.convex.dev/",
+      "Testing & Linting": "https://eslint.org/docs/user-guide/getting-started",
+      "Deployment": "https://vercel.com/docs/deployments",
+      "Environment Variables": "https://nodejs.org/api/process.html#processenv",
+      "Miscellaneous": "https://code.visualstudio.com/docs/editor/command-line"
+
+    }
+
+}
 }
