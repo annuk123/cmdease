@@ -171,14 +171,21 @@ async function promptNavigator() {
 
     console.log(`👉 You selected: ${selectedCategory}`);
 
-    const { cmd } = await inquirer.prompt([
-      {
-        type: 'autocomplete',
-        name: 'cmd',
-        message: `${online ? chalk.green('Online') : chalk.red('Offline')}  Start typing to search a command:`,
-        source: (answersSoFar, input) => searchCommands(selectedCategory, input)
-      }
-    ]);
+ const { cmd } = await inquirer.prompt([
+  {
+    type: 'autocomplete',
+    name: 'cmd',
+    message: `${online ? chalk.green('Online') : chalk.red('Offline')}  Start typing to search a command:`,
+    source: (answersSoFar, input) => searchCommands(selectedCategory, input)
+  }
+]);
+
+// cmd is now the full object → extract command properly
+console.log(chalk.blue(`\n🚀 Running: ${cmd.command}\n`));
+await runInteractiveCommand(cmd.command);
+
+await addToHistory(cmd);
+
 
     const selected = cmd; // cmd is now the object with command, category, cmdName
 
@@ -254,8 +261,13 @@ async function searchCommands(category, input = '') {
   const sortedList = await buildList();
   const filteredList = sortedList.filter(item => item.value.category === category);
   const results = fuzzy.filter(input, filteredList, { extract: el => el.name });
-  return Promise.resolve(results.map(r => r.original.value)); // Return the full value object
+
+  return Promise.resolve(results.map(r => ({
+    name: r.original.name,   // What will be shown in the prompt
+    value: r.original.value  // What you will get as 'cmd' in the response
+  })));
 }
+
 
 async function syncWhenOnline() {
   setInterval(async () => {
