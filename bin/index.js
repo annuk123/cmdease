@@ -54,9 +54,6 @@ program
 
 program.parse(process.argv);
 
-// ✅ Check for cmdpalette.json
-
-
 // ✅ Show custom help
 if (process.argv.includes('--help')) {
   console.log(`
@@ -82,7 +79,7 @@ ${chalk.yellow('Example:')}
   cmdease --version
   cmdease --help
 
-Happy Coding! 
+Happy Coding! 🚀
 `);
   process.exit(0);
 }
@@ -101,21 +98,24 @@ function buildCommandList() {
     for (const cmdName in commands[category]) {
       list.push({
         name: `${chalk.blue(category)} → ${chalk.green(cmdName)}`,
-        value: commands[category][cmdName],
-        category,
-        cmdName
+        value: {
+          command: commands[category][cmdName], // ✔️ Pass full object
+          category,
+          cmdName
+        }
       });
     }
   }
 
-  categories = [...new Set(list.map(item => item.category))];
+  categories = [...new Set(list.map(item => item.value.category))];
 }
 
 async function main() {
-    if (!fs.existsSync('./.cmdpalette.json')) {
+  if (!fs.existsSync('./.cmdpalette.json')) {
     console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
     process.exit(1);
   }
+
   console.log(chalk.blue('👋 Welcome to cmdease CLI!'));
   try {
     await ensureCommands(remoteUrl);
@@ -136,6 +136,15 @@ async function main() {
 
     syncWhenOnline();
 
+    await promptNavigator(); // 👈 Call the new prompt navigator
+  } catch (err) {
+    console.error(chalk.red('❌ Unexpected error:'), err);
+  }
+}
+
+// ✅ Prompt Navigator with Back Option
+async function promptNavigator() {
+  try {
     const spinner = ora('Fetching categories...').start();
     categories = getCategories();
 
@@ -151,9 +160,14 @@ async function main() {
         type: 'list',
         name: 'selectedCategory',
         message: 'Select a category:',
-        choices: categories.map(cat => ({ name: cat, value: cat })),
+        choices: [...categories.map(cat => ({ name: cat, value: cat })), { name: 'Exit', value: 'exit' }]
       }
     ]);
+
+    if (selectedCategory === 'exit') {
+      console.log(chalk.blue('\n👋 Exiting cmdease CLI. Bye!'));
+      process.exit(0);
+    }
 
     console.log(`👉 You selected: ${selectedCategory}`);
 
@@ -166,10 +180,10 @@ async function main() {
       }
     ]);
 
-    const selected = list.find(item => item.value === cmd);
+    const selected = cmd; // cmd is now the object with command, category, cmdName
 
-console.log(chalk.blue(`\n🚀 Running: ${cmd}\n`));
-await runInteractiveCommand(cmd);
+    console.log(chalk.blue(`\n🚀 Running: ${selected.command}\n`));
+    await runInteractiveCommand(selected.command);
 
     await addToHistory(selected);
 
@@ -180,8 +194,19 @@ await runInteractiveCommand(cmd);
     if (favorite) {
       await toggleFavorite(selected);
     }
+
+    const { continueSession } = await inquirer.prompt([
+      { type: 'confirm', name: 'continueSession', message: '✨ Do you want to run another command?', default: true }
+    ]);
+
+    if (continueSession) {
+      await promptNavigator(); // 👈 Loop again
+    } else {
+      console.log(chalk.blue('\n👋 Exiting cmdease CLI. Bye!'));
+      process.exit(0);
+    }
   } catch (err) {
-    console.error(chalk.red('❌ Unexpected error:'), err);
+    console.error(chalk.red('❌ Unexpected error in navigator:'), err);
   }
 }
 
@@ -210,16 +235,16 @@ async function buildList() {
   const favorites = online ? await getFavorites() : loadLocalFavorites();
 
   const favoriteList = favorites
-    .map(fav => list.find(item => item.cmdName === fav.cmdName && item.category === fav.category))
+    .map(fav => list.find(item => item.value.cmdName === fav.cmdName && item.value.category === fav.category))
     .filter(Boolean);
 
   const historyList = history
-    .map(hist => list.find(item => item.cmdName === hist.cmdName && item.category === hist.category))
+    .map(hist => list.find(item => item.value.cmdName === hist.cmdName && item.value.category === hist.category))
     .filter(Boolean);
 
   const others = list.filter(item =>
-    !favorites.some(fav => fav.cmdName === item.cmdName && fav.category === item.category) &&
-    !history.some(hist => hist.cmdName === item.cmdName && hist.category === item.category)
+    !favorites.some(fav => fav.cmdName === item.value.cmdName && fav.category === item.value.category) &&
+    !history.some(hist => hist.cmdName === item.value.cmdName && hist.category === item.value.category)
   );
 
   return [...favoriteList, ...historyList, ...others];
@@ -227,9 +252,9 @@ async function buildList() {
 
 async function searchCommands(category, input = '') {
   const sortedList = await buildList();
-  const filteredList = sortedList.filter(item => item.category === category);
+  const filteredList = sortedList.filter(item => item.value.category === category);
   const results = fuzzy.filter(input, filteredList, { extract: el => el.name });
-  return Promise.resolve(results.map(r => r.original));
+  return Promise.resolve(results.map(r => r.original.value)); // Return the full value object
 }
 
 async function syncWhenOnline() {
