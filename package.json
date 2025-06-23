@@ -1,6 +1,6 @@
 {
   "name": "cmdease",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "A powerful offline-first CLI command palette to quickly access and run commands.",
   "main": "index.js",
   "type": "module",
