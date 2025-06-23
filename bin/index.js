@@ -2,30 +2,42 @@
 
 import inquirer from 'inquirer';
 import autocompletePrompt from 'inquirer-autocomplete-prompt';
-inquirer.registerPrompt('autocomplete', autocompletePrompt);
-
 import { program } from 'commander';
 import chalk from 'chalk';
 import fs from 'fs';
 import fuzzy from 'fuzzy';
 import ora from 'ora';
+import path from 'path';
+import os from 'os';
+
 import { runInteractiveCommand } from '../lib/commandExecutor.js';
-
-import { 
-  fetchRemoteCommands, 
-  getCommands, 
-  ensureCommands, 
-  autoPullOnVersionChange 
-} from '../lib/commandLoader.js';
-
+import { fetchRemoteCommands, getCommands, ensureCommands, autoPullOnVersionChange } from '../lib/commandLoader.js';
 import { startConnectionMonitor } from '../lib/connectionMonitor.js';
 import { addToHistory, getHistory, syncLocalHistory } from '../lib/historyService.js';
 import { toggleFavorite, getFavorites, syncLocalFavorites } from '../lib/favoritesService.js';
 import { isOnline } from '../lib/connection.js';
 import { loadLocalHistory, loadLocalFavorites } from '../lib/localCache.js';
 
+inquirer.registerPrompt('autocomplete', autocompletePrompt);
+
 const remoteUrl = 'https://raw.githubusercontent.com/annuk123/cmdease/main/.cmdpalette.json';
 
+const CONFIG_FILE = path.join(os.homedir(), '.cmdease-config.json');
+
+// 🌐 Global Config for Convex Path
+export function saveConvexPath(projectPath) {
+  const config = { convexPath: projectPath };
+  fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
+}
+
+export function getConvexPath() {
+  if (!fs.existsSync(CONFIG_FILE)) return null;
+
+  const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
+  return config.convexPath || null;
+}
+
+// CLI Commands
 program
   .name('cmdease')
   .description('Command Palette CLI')
@@ -48,13 +60,22 @@ program
   });
 
 program
+  .command('link <projectPath>')
+  .description('Link cmdease to a Convex project')
+  .action((projectPath) => {
+    saveConvexPath(projectPath);
+    console.log(chalk.green(`🔗 Successfully linked cmdease to Convex project at: ${projectPath}`));
+    process.exit(0);
+  });
+
+program
   .action(() => {
-    main(); // Call the main function
+    main(); // Main CLI entry point
   });
 
 program.parse(process.argv);
 
-// ✅ Show custom help
+// 🛠️ Custom Help
 if (process.argv.includes('--help')) {
   console.log(`
 ${chalk.cyan('cmdease - Developer Command Palette CLI')}
@@ -63,6 +84,7 @@ ${chalk.yellow('Usage:')}
   cmdease                Start the interactive CLI
   cmdease init           Initialize cmdease in this project
   cmdease pull           Manually sync commands
+  cmdease link <path>    Link to Convex project path
   cmdease --help         Show this help message
   cmdease --version      Show CLI version
 
@@ -76,8 +98,7 @@ ${chalk.yellow('Features:')}
 
 ${chalk.yellow('Example:')}
   cmdease
-  cmdease --version
-  cmdease --help
+  cmdease link ~/projects/my-convex-app
 
 Happy Coding! 🚀
 `);
@@ -85,7 +106,6 @@ Happy Coding! 🚀
 }
 
 let list = [];
-let categories = [];
 let online = false;
 
 function buildCommandList() {
@@ -99,15 +119,13 @@ function buildCommandList() {
       list.push({
         name: `${chalk.blue(category)} → ${chalk.green(cmdName)}`,
         value: {
-          command: commands[category][cmdName], // ✔️ Pass full object
+          command: commands[category][cmdName],
           category,
           cmdName
         }
       });
     }
   }
-
-  categories = [...new Set(list.map(item => item.value.category))];
 }
 
 async function main() {
@@ -115,6 +133,7 @@ async function main() {
     console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
     process.exit(1);
   }
+
   console.log(chalk.blue('👋 Welcome to cmdease CLI!'));
 
   try {
@@ -157,7 +176,6 @@ async function main() {
 
     console.log(`👉 You selected: ${selectedCategory}`);
 
-    // ✅ Start recursive navigation
     await promptNavigator(commands[selectedCategory]);
 
   } catch (err) {
@@ -165,11 +183,8 @@ async function main() {
   }
 }
 
-
-// ✅ Prompt Navigator with Back Option
 async function promptNavigator(node) {
   try {
-    // If node is a string -> execute directly
     if (typeof node === 'string') {
       console.log(chalk.blue(`\n🚀 Running: ${node}\n`));
       await runInteractiveCommand(node);
@@ -187,14 +202,11 @@ async function promptNavigator(node) {
       }
     ]);
 
-    const nextNode = node[selectedKey];
-
-    await promptNavigator(nextNode); // Go deeper recursively
+    await promptNavigator(node[selectedKey]);
   } catch (err) {
     console.error(chalk.red('❌ Unexpected error in navigator:'), err);
   }
 }
-
 
 async function autoRefreshCommands(remoteUrl) {
   try {
@@ -242,11 +254,10 @@ async function searchCommands(category, input = '') {
   const results = fuzzy.filter(input, filteredList, { extract: el => el.name });
 
   return Promise.resolve(results.map(r => ({
-    name: r.original.name,   // What will be shown in the prompt
-    value: r.original.value  // What you will get as 'cmd' in the response
+    name: r.original.name,
+    value: r.original.value
   })));
 }
-
 
 async function syncWhenOnline() {
   setInterval(async () => {
@@ -263,8 +274,3 @@ process.on('SIGINT', () => {
   console.log(chalk.blue('\n👋 Exiting cmdease CLI. Bye!'));
   process.exit(0);
 });
-
-function getCategories() {
-  const commands = getCommands() || {};
-  return Object.keys(commands).filter(key => key !== 'version');
-}
