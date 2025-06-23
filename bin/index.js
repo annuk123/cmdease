@@ -9,6 +9,8 @@ import fuzzy from 'fuzzy';
 import ora from 'ora';
 import path from 'path';
 import os from 'os';
+import { checkConvexProject } from '../lib/convexUtils.js';
+
 
 import { runInteractiveCommand } from '../lib/commandExecutor.js';
 import { fetchRemoteCommands, getCommands, ensureCommands, autoPullOnVersionChange } from '../lib/commandLoader.js';
@@ -156,14 +158,21 @@ async function handleConvexLinking() {
 
 
 async function main() {
+  console.log(chalk.blue('👋 Welcome to cmdease CLI!'));
+
+  // 🔗 Convex Project Linking
+  await handleConvexLinking();
+  const isConvexLinked = checkConvexProject();
+
+  if (!isConvexLinked) {
+    console.log(chalk.yellow('⚡ No Convex project linked. Running in offline/local mode.\n'));
+  }
+
+  // 🔍 Check if command file exists
   if (!fs.existsSync('./.cmdpalette.json')) {
     console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
     process.exit(1);
   }
-
-  console.log(chalk.blue('👋 Welcome to cmdease CLI!'));
-
-   await handleConvexLinking();
 
   try {
     await ensureCommands(remoteUrl);
@@ -173,15 +182,18 @@ async function main() {
 
     online = await isOnline();
 
-    if (online) {
+    if (online && isConvexLinked) {
       console.log(chalk.green('✅ You are Online (Convex Live)'));
       await syncLocalHistory();
       await syncLocalFavorites();
+
+      // Sync only when Convex is linked
+      syncWhenOnline();
+    } else if (online && !isConvexLinked) {
+      console.log(chalk.yellow('⚡ Online but no Convex project linked. Skipping sync.'));
     } else {
       console.log(chalk.red('❌ You are Offline (Local Cache Active)'));
     }
-
-    syncWhenOnline();
 
     const spinner = ora('Fetching categories...').start();
     const commands = getCommands();
@@ -191,7 +203,7 @@ async function main() {
       spinner.fail('⚠️ No categories available. Try to sync now.');
       process.exit(0);
     } else {
-      spinner.succeed('Categories fetched successfully!');
+      spinner.succeed('✔ Categories fetched successfully!');
     }
 
     const { selectedCategory } = await inquirer.prompt([
@@ -211,6 +223,7 @@ async function main() {
     console.error(chalk.red('❌ Unexpected error:'), err);
   }
 }
+
 
 async function promptNavigator(node) {
   try {
