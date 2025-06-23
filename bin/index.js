@@ -133,24 +133,39 @@ function buildCommandList() {
 async function handleConvexLinking() {
   const linkedPath = getConvexPath();
 
-  if (!linkedPath && fs.existsSync('./convex')) {
-    console.log(chalk.yellow('👉 Convex project detected in this directory.'));
+  // Check if path is not linked OR linked path is invalid
+  if (!linkedPath || !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
 
-    const { shouldLink } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'shouldLink',
-        message: 'Do you want to link this Convex project now?',
-        default: true,
-      },
-    ]);
+    if (linkedPath && !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
+      console.log(chalk.red('⚠️ Convex project not detected at the linked path. It may have been moved or deleted.\n'));
+    }
+    if (linkedPath && !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
+  // Optionally: Unlink the broken path
+  fs.unlinkSync(CONFIG_FILE);
+  console.log(chalk.red('⚡ Previous Convex link removed due to invalid path.\n'));
+}
 
-    if (shouldLink) {
-      const absolutePath = path.resolve('./convex');
-      saveConvexPath(absolutePath);
-      console.log(chalk.green(`🔗 Successfully linked Convex project to cmdease at: ${absolutePath}\n`));
+    if (fs.existsSync('./convex')) {
+      console.log(chalk.yellow('👉 Convex project detected in this directory.'));
+
+      const { shouldLink } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'shouldLink',
+          message: 'Do you want to link this Convex project now?',
+          default: true,
+        },
+      ]);
+
+      if (shouldLink) {
+        const absolutePath = path.resolve('./convex');
+        saveConvexPath(absolutePath);
+        console.log(chalk.green(`🔗 Successfully linked Convex project to cmdease at: ${absolutePath}\n`));
+      } else {
+        console.log(chalk.yellow('⚡ Skipping Convex linking. Running in offline/local mode.\n'));
+      }
     } else {
-      console.log(chalk.yellow('⚡ Skipping Convex linking. Running in offline/local mode.\n'));
+      console.log(chalk.yellow('⚡ No Convex project found. Running in offline/local mode.\n'));
     }
   }
 }
