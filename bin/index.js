@@ -130,11 +130,6 @@ function buildCommandList() {
   }
 }
 
-import fs from 'fs';
-import path from 'path';
-import inquirer from 'inquirer';
-import chalk from 'chalk';
-import { getConvexPath, saveConvexPath, unlinkConvexPath } from './globalConfig.js';
 
 export async function handleConvexLinking() {
   const linkedPath = getConvexPath();
