@@ -131,22 +131,20 @@ function buildCommandList() {
 }
 
 
-export async function handleConvexLinking() {
+async function handleConvexLinking() {
   const linkedPath = getConvexPath();
 
-  // If no path linked or if linked path is invalid
+  // Check if path is not linked OR linked path is invalid
   if (!linkedPath || !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
 
-    // If previously linked but now broken
-    if (linkedPath) {
-      console.log(chalk.red('⚠️ Convex project not detected at the linked path. It may have been moved or deleted.\n'));
+    if (linkedPath && !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
+      console.log(chalk.red('⚠️ Linked Convex project not found at the saved path. It may have been moved or deleted.'));
       unlinkConvexPath();
-      console.log(chalk.red('⚡ Previous Convex link removed due to invalid path.\n'));
+      console.log(chalk.yellow('🔗 Previous link removed. Please re-link using: cmdease link ./convex\n'));
     }
 
-    // Check if a Convex project exists in current directory
     if (fs.existsSync('./convex')) {
-      console.log(chalk.yellow('👉 Convex project detected in this directory.\n'));
+      console.log(chalk.yellow('👉 Convex project detected in this directory.'));
 
       const { shouldLink } = await inquirer.prompt([
         {
@@ -169,6 +167,7 @@ export async function handleConvexLinking() {
     }
   }
 }
+
 
 
 
