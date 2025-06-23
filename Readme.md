@@ -59,6 +59,12 @@ pnpm add -g cmdease
 
 ##  Quick Start
 
+Inialize CLI:
+
+```bash
+cmdease init
+```
+
 Just run:
 
 ```bash
@@ -116,6 +122,7 @@ Features:
 
 | Command             | Description               |
 | ------------------- | ------------------------- |
+| `cmdease init`      | Initialize the  CLI       |
 | `cmdease`           | Start the interactive CLI |
 | `cmdease --help`    | Show help menu            |
 | `cmdease --version` | Show CLI version          |
