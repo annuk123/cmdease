@@ -133,38 +133,40 @@ function buildCommandList() {
 
 async function handleConvexLinking() {
   const linkedPath = getConvexPath();
+  const convexApiPath = linkedPath ? path.join(linkedPath, '_generated', 'api.js') : null;
 
-  // Check if path is not linked OR linked path is invalid
-  if (!linkedPath || !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
+  if (linkedPath && !fs.existsSync(convexApiPath)) {
+    console.log(chalk.red('⚠️ Linked Convex project not found at the saved path. It may have been moved or deleted.'));
+    unlinkConvexPath();
+    console.log(chalk.yellow('🔗 Previous link removed. Please re-link using: cmdease link ./convex\n'));
+    console.log(chalk.yellow('⚡ Running in offline/local mode.\n'));
+    return;
+  }
 
-    if (linkedPath && !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
-      console.log(chalk.red('⚠️ Linked Convex project not found at the saved path. It may have been moved or deleted.'));
-      unlinkConvexPath();
-      console.log(chalk.yellow('🔗 Previous link removed. Please re-link using: cmdease link ./convex\n'));
-    }
+  if (!linkedPath && fs.existsSync('./convex')) {
+    console.log(chalk.yellow('👉 Convex project detected in this directory.'));
 
-    if (fs.existsSync('./convex')) {
-      console.log(chalk.yellow('👉 Convex project detected in this directory.'));
+    const { shouldLink } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'shouldLink',
+        message: 'Do you want to link this Convex project now?',
+        default: true,
+      },
+    ]);
 
-      const { shouldLink } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'shouldLink',
-          message: 'Do you want to link this Convex project now?',
-          default: true,
-        },
-      ]);
-
-      if (shouldLink) {
-        const absolutePath = path.resolve('./convex');
-        saveConvexPath(absolutePath);
-        console.log(chalk.green(`🔗 Successfully linked Convex project to cmdease at: ${absolutePath}\n`));
-      } else {
-        console.log(chalk.yellow('⚡ Skipping Convex linking. Running in offline/local mode.\n'));
-      }
+    if (shouldLink) {
+      const absolutePath = path.resolve('./convex');
+      saveConvexPath(absolutePath);
+      console.log(chalk.green(`🔗 Successfully linked Convex project to cmdease at: ${absolutePath}\n`));
     } else {
-      console.log(chalk.yellow('⚡ No Convex project found. Running in offline/local mode.\n'));
+      console.log(chalk.yellow('⚡ Skipping Convex linking. Running in offline/local mode.\n'));
     }
+    return;
+  }
+
+  if (!linkedPath && !fs.existsSync('./convex')) {
+    console.log(chalk.yellow('⚡ No Convex project linked. Running in offline/local mode.\n'));
   }
 }
 
