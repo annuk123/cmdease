@@ -130,23 +130,28 @@ function buildCommandList() {
   }
 }
 
-async function handleConvexLinking() {
+import fs from 'fs';
+import path from 'path';
+import inquirer from 'inquirer';
+import chalk from 'chalk';
+import { getConvexPath, saveConvexPath, unlinkConvexPath } from './globalConfig.js';
+
+export async function handleConvexLinking() {
   const linkedPath = getConvexPath();
 
-  // Check if path is not linked OR linked path is invalid
+  // If no path linked or if linked path is invalid
   if (!linkedPath || !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
 
-    if (linkedPath && !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
+    // If previously linked but now broken
+    if (linkedPath) {
       console.log(chalk.red('⚠️ Convex project not detected at the linked path. It may have been moved or deleted.\n'));
+      unlinkConvexPath();
+      console.log(chalk.red('⚡ Previous Convex link removed due to invalid path.\n'));
     }
-    if (linkedPath && !fs.existsSync(path.join(linkedPath, '_generated', 'api.js'))) {
-  // Optionally: Unlink the broken path
-  fs.unlinkSync(CONFIG_FILE);
-  console.log(chalk.red('⚡ Previous Convex link removed due to invalid path.\n'));
-}
 
+    // Check if a Convex project exists in current directory
     if (fs.existsSync('./convex')) {
-      console.log(chalk.yellow('👉 Convex project detected in this directory.'));
+      console.log(chalk.yellow('👉 Convex project detected in this directory.\n'));
 
       const { shouldLink } = await inquirer.prompt([
         {
