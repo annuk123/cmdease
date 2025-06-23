@@ -161,7 +161,6 @@ Even without internet, cmdease:
 ? Offline - Start typing to search a command: git status
 🚀 Running: git status
 ```
-
 ---
 
 ## Auto-Sync & Version Updates
