@@ -60,14 +60,14 @@ program
   });
 
 program
-  .command('link <projectPath>')
+.command('link <projectPath>')
   .description('Link cmdease to a Convex project')
   .action((projectPath) => {
-    saveConvexPath(projectPath);
-    console.log(chalk.green(`🔗 Successfully linked cmdease to Convex project at: ${projectPath}`));
+    const absolutePath = path.resolve(projectPath); // Convert to absolute path
+    saveConvexPath(absolutePath);
+    console.log(chalk.green(`🔗 Successfully linked cmdease to Convex project at: ${absolutePath}`));
     process.exit(0);
   });
-
 program
   .action(() => {
     main(); // Main CLI entry point
@@ -128,6 +128,33 @@ function buildCommandList() {
   }
 }
 
+async function handleConvexLinking() {
+  const linkedPath = getConvexPath();
+
+  if (!linkedPath && fs.existsSync('./convex')) {
+    console.log(chalk.yellow('👉 Convex project detected in this directory.'));
+
+    const { shouldLink } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'shouldLink',
+        message: 'Do you want to link this Convex project now?',
+        default: true,
+      },
+    ]);
+
+    if (shouldLink) {
+      const absolutePath = path.resolve('./convex');
+      saveConvexPath(absolutePath);
+      console.log(chalk.green(`🔗 Successfully linked Convex project to cmdease at: ${absolutePath}\n`));
+    } else {
+      console.log(chalk.yellow('⚡ Skipping Convex linking. Running in offline/local mode.\n'));
+    }
+  }
+}
+
+
+
 async function main() {
   if (!fs.existsSync('./.cmdpalette.json')) {
     console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
@@ -135,6 +162,8 @@ async function main() {
   }
 
   console.log(chalk.blue('👋 Welcome to cmdease CLI!'));
+
+   await handleConvexLinking();
 
   try {
     await ensureCommands(remoteUrl);
