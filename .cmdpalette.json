@@ -97,8 +97,6 @@
       }
     }
   },
-
-
   "Package Managers": {
     "Install Package Manager": {
       "npm": "npm install -g npm",
@@ -113,7 +111,6 @@
       "bun": "bun upgrade"
     }
   },
-
   "Development": {
     "Start Server": {
       "npm": "npm run dev",
@@ -134,7 +131,6 @@
       "bun": "bun run preview"
     }
   },
-
   "Databases": {
     "Install Database Client": {
       "Convex": {
@@ -187,7 +183,6 @@
       }
     }
   },
-
   "Prisma": {
     "Install Prisma": {
       "Prisma CLI": {
@@ -230,7 +225,6 @@
       }
     }
   },
-
   "Docker": {
     "Docker Commands": {
       "Docker Build": "docker build -t your-image-name .",
@@ -242,7 +236,6 @@
       "Docker Remove All Containers": "docker rm $(docker ps -aq)"
     }
   },
-
   "Git": {
     "Git Basic Commands": {
       "Git Init": "git init",
@@ -256,7 +249,6 @@
       "Git Log": "git log --oneline"
     }
   },
-
   "Supabase": {
     "Supabase Commands": {
       "Login": {
@@ -285,7 +277,6 @@
       }
     }
   },
-
   "Firebase": {
     "Firebase Commands": {
       "Login": "firebase login",
@@ -294,7 +285,6 @@
       "Start Emulator": "firebase emulators:start"
     }
   },
-
   "CLI Tools": {
     "Create New Project": {
       "Vite": {
@@ -329,7 +319,6 @@
       }
     }
   },
-
   "Convex DB": {
     "Convex Commands": {
       "Dev Server": {
@@ -364,7 +353,6 @@
       }
     }
   },
-
   "Testing & Linting": {
     "Testing Commands": {
       "Run Tests": {
@@ -381,7 +369,6 @@
       }
     }
   },
-
   "Deployment": {
     "Deploy With": {
       "Vercel": "vercel --prod",
@@ -389,7 +376,6 @@
       "Railway": "railway up"
     }
   },
-
   "Environment Variables": {
     "Set Environment Variable": {
       "Linux/Mac": "export VARIABLE_NAME=value",
@@ -399,7 +385,6 @@
       "Code Snippet": "const value = process.env.VARIABLE_NAME;"
     }
   },
-
   "Miscellaneous": {
     "Clear Console": {
       "npm": "clear",
@@ -473,7 +458,7 @@
       "Show Git Diff": "git diff",
       "Show Git Stash": "git stash list",
       "Show Git Tags": "git tag",
-      "Show Git Config": "git config --list", 
+      "Show Git Config": "git config --list",
       "Show Git History": "git reflog",
       "Show Git Blame": "git blame <file-name>",
       "Show Git Shortlog": "git shortlog -s -n",
@@ -486,7 +471,7 @@
       "Show Git Config File": "cat .git/config",
       "Show Git Version": "git --version",
       "Show Node.js Version": "node -v",
-      "Show npm Version": "npm -v", 
+      "Show npm Version": "npm -v",
       "Show pnpm Version": "pnpm -v",
       "Show Yarn Version": "yarn -v",
       "Show Bun Version": "bun -v",
@@ -501,7 +486,7 @@
       "Show Firebase CLI Version": "firebase --version",
       "Show Supabase CLI Version": "supabase --version",
       "Show Convex CLI Version": "convex --version",
-      "Show Prisma CLI Version": "prisma -v", 
+      "Show Prisma CLI Version": "prisma -v",
       "Show Vercel CLI Version": "vercel --version",
       "Show Netlify CLI Version": "netlify --version",
       "Show Railway CLI Version": "railway --version",
@@ -516,7 +501,7 @@
       "Tailwind CSS": "https://tailwindcss.com/docs",
       "Material UI": "https://mui.com/material-ui/getting-started/overview/",
       "Bootstrap": "https://getbootstrap.com/docs/5.3/getting-started/introduction/",
-      "NeonDB": "https://neon.tech/docs", 
+      "NeonDB": "https://neon.tech/docs",
       "MongoDB": "https://www.mongodb.com/docs/",
       "PostgreSQL": "https://www.postgresql.org/docs/",
       "MySQL": "https://dev.mysql.com/doc/",
@@ -536,8 +521,7 @@
       "Deployment": "https://vercel.com/docs/deployments",
       "Environment Variables": "https://nodejs.org/api/process.html#processenv",
       "Miscellaneous": "https://code.visualstudio.com/docs/editor/command-line"
-
     }
-
-}
+  },
+  "version": "1.3.3"
 }
