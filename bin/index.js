@@ -26,7 +26,7 @@ const remoteUrl = 'https://raw.githubusercontent.com/annuk123/cmdease/main/.cmdp
 
 const CONFIG_FILE = path.join(os.homedir(), '.cmdease-config.json');
 
-// 🌐 Global Config for Convex Path
+//  Global Config for Convex Path
 export function saveConvexPath(projectPath) {
   const config = { convexPath: projectPath };
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
@@ -77,7 +77,7 @@ program
 
 program.parse(process.argv);
 
-// 🛠️ Custom Help
+//  Custom Help
 if (process.argv.includes('--help')) {
   console.log(`
 ${chalk.cyan('cmdease - Developer Command Palette CLI')}
@@ -102,7 +102,7 @@ ${chalk.yellow('Example:')}
   cmdease
   cmdease link ~/projects/my-convex-app
 
-Happy Coding! 🚀
+Happy Coding! 
 `);
   process.exit(0);
 }
@@ -138,13 +138,13 @@ async function handleConvexLinking() {
   if (linkedPath && !fs.existsSync(convexApiPath)) {
     console.log(chalk.red('⚠️ Linked Convex project not found at the saved path. It may have been moved or deleted.'));
     unlinkConvexPath();
-    console.log(chalk.yellow('🔗 Previous link removed. Please re-link using: cmdease link ./convex\n'));
-    console.log(chalk.yellow('⚡ Running in offline/local mode.\n'));
+    console.log(chalk.yellow('Previous link removed. Please re-link using: cmdease link ./convex\n'));
+    console.log(chalk.yellow(' Running in offline/local mode.\n'));
     return;
   }
 
   if (!linkedPath && fs.existsSync('./convex')) {
-    console.log(chalk.yellow('👉 Convex project detected in this directory.'));
+    console.log(chalk.yellow(' Convex project detected in this directory.'));
 
     const { shouldLink } = await inquirer.prompt([
       {
@@ -158,9 +158,9 @@ async function handleConvexLinking() {
     if (shouldLink) {
       const absolutePath = path.resolve('./convex');
       saveConvexPath(absolutePath);
-      console.log(chalk.green(`🔗 Successfully linked Convex project to cmdease at: ${absolutePath}\n`));
+      console.log(chalk.green(` Successfully linked Convex project to cmdease at: ${absolutePath}\n`));
     } else {
-      console.log(chalk.yellow('⚡ Skipping Convex linking. Running in offline/local mode.\n'));
+      console.log(chalk.yellow('Skipping Convex linking. Running in offline/local mode.\n'));
     }
     return;
   }
@@ -176,15 +176,15 @@ async function handleConvexLinking() {
 async function main() {
   console.log(chalk.blue('👋 Welcome to cmdease CLI!'));
 
-  // 🔗 Convex Project Linking
+  //  Convex Project Linking
   await handleConvexLinking();
   const isConvexLinked = checkConvexProject();
 
   if (!isConvexLinked) {
-    console.log(chalk.yellow('⚡ No Convex project linked. Running in offline/local mode.\n'));
+    console.log(chalk.yellow(' No Convex project linked. Running in offline/local mode.\n'));
   }
 
-  // 🔍 Check if command file exists
+  //  Check if command file exists
   if (!fs.existsSync('./.cmdpalette.json')) {
     console.log(chalk.red('❌ No .cmdpalette.json found. Please run `cmdease init`.'));
     process.exit(1);
@@ -199,14 +199,14 @@ async function main() {
     online = await isOnline();
 
     if (online && isConvexLinked) {
-      console.log(chalk.green('✅ You are Online (Convex Live)'));
+      console.log(chalk.green('You are Online (Convex Live)'));
       await syncLocalHistory();
       await syncLocalFavorites();
 
       // Sync only when Convex is linked
       syncWhenOnline();
     } else if (online && !isConvexLinked) {
-      console.log(chalk.yellow('⚡ Online but no Convex project linked. Skipping sync.'));
+      console.log(chalk.yellow('Online but no Convex project linked. Skipping sync.'));
     } else {
       console.log(chalk.red('❌ You are Offline (Local Cache Active)'));
     }
@@ -244,7 +244,7 @@ async function main() {
 async function promptNavigator(node) {
   try {
     if (typeof node === 'string') {
-      console.log(chalk.blue(`\n🚀 Running: ${node}\n`));
+      console.log(chalk.blue(`\n Running: ${node}\n`));
       await runInteractiveCommand(node);
       return;
     }
@@ -270,7 +270,7 @@ async function autoRefreshCommands(remoteUrl) {
   try {
     await fetchRemoteCommands(remoteUrl);
     buildCommandList();
-    console.log(chalk.yellow('🔄 Commands auto-refreshed from remote.'));
+    console.log(chalk.yellow(' Commands auto-refreshed from remote.'));
   } catch (err) {
     console.log(chalk.yellow('⚠️ Failed to fetch remote commands. Using local cache.'));
   }
@@ -279,7 +279,7 @@ async function autoRefreshCommands(remoteUrl) {
     try {
       await fetchRemoteCommands(remoteUrl);
       buildCommandList();
-      console.log(chalk.yellow('🔄 Commands auto-refreshed from remote.'));
+      console.log(chalk.yellow(' Commands auto-refreshed from remote.'));
     } catch (err) {
       console.log(chalk.yellow('⚠️ Auto-refresh failed.'));
     }
@@ -320,7 +320,7 @@ async function searchCommands(category, input = '') {
 async function syncWhenOnline() {
   setInterval(async () => {
     if (!online && await isOnline()) {
-      console.log(chalk.green('\n✅ Connection restored! Auto-syncing...'));
+      console.log(chalk.green('\n✔ Connection restored! Auto-syncing...'));
       await syncLocalHistory();
       await syncLocalFavorites();
       online = true;
